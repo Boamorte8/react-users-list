@@ -11,13 +11,14 @@
 
 .name {
 	font-weight: bold;
-	width: 60%;
+	width: 40%;
 }
 
 .status {
 	width: 20%;
 }
 
+.action,
 .role {
 	width: 20%;
 	text-align: center;
