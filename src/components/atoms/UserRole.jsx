@@ -7,8 +7,6 @@ const ROLE_STYLES = {
 };
 
 const UserRole = ({ role }) => {
-	console.log('      - UserRole');
-
 	const [roleName, roleStyles] = ROLE_STYLES[role] || ROLE_STYLES.other;
 	return <span className={`${style.role} ${roleStyles}`}>{roleName}</span>;
 };
