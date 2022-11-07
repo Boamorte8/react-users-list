@@ -1,11 +1,9 @@
 import UserRow from './UserRow';
 
-const UsersListRows = ({ users, toggleUserActive }) => {
+const UsersListRows = ({ users }) => {
 	if (!users.length) return <p>There are not users</p>;
 
-	return users.map(user => (
-		<UserRow {...user} toggleUserActive={toggleUserActive} key={user.id} />
-	));
+	return users.map(user => <UserRow {...user} key={user.id} />);
 };
 
 export default UsersListRows;
