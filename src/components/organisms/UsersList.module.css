@@ -1,6 +1,13 @@
 .wrapper {
 	width: 100%;
-	max-width: 650px;
+	max-width: 750px;
 	margin: auto;
 	padding: 1rem;
+}
+
+.title {
+	text-align: center;
+
+	font-size: var(--title-1);
+	font-weight: 700;
 }

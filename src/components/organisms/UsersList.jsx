@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
-import { UsersContext } from '../../lib/contexts/UsersContext';
 import UsersListFilters from '../molecules/UsersListFilters';
 import UsersListRows from '../molecules/UsersListRows';
 import style from './UsersList.module.css';
 
 const UsersList = ({ initialUsers }) => {
 	const { search, onlyActive, sortBy, ...setFiltersFunctions } = useFilters();
-	const { users, toggleUserActive } = useUsers(initialUsers);
+	const { users } = useUsers(initialUsers);
 
 	let usersFiltered = filterUsersByActive(users, onlyActive);
 	usersFiltered = filterUsersByName(usersFiltered, search);
@@ -15,7 +14,7 @@ const UsersList = ({ initialUsers }) => {
 
 	return (
 		<div className={style.wrapper}>
-			<h1>User List</h1>
+			<h1 className={style.title}>User List</h1>
 
 			<UsersListFilters
 				search={search}
@@ -23,9 +22,7 @@ const UsersList = ({ initialUsers }) => {
 				sortBy={sortBy}
 				{...setFiltersFunctions}
 			/>
-			<UsersContext.Provider value={{ toggleUserActive }}>
-				<UsersListRows users={usersFiltered} />
-			</UsersContext.Provider>
+			<UsersListRows users={usersFiltered} />
 		</div>
 	);
 };
@@ -46,16 +43,7 @@ const useFilters = () => {
 const useUsers = initialUsers => {
 	const [users, setUsers] = useState(initialUsers);
 
-	const toggleUserActive = userId => {
-		const newUsers = users.map(user => {
-			if (user.id === userId) user.active = !user.active;
-			return user;
-		});
-
-		setUsers(newUsers);
-	};
-
-	return { users, toggleUserActive };
+	return { users };
 };
 
 const filterUsersByName = (users, search) => {
