@@ -34,7 +34,11 @@ const useFilters = () => {
 		sortBy: 0
 	});
 	const setSearch = search => setFilters({ ...filters, search });
-	const setOnlyActive = onlyActive => setFilters({ ...filters, onlyActive });
+	const setOnlyActive = onlyActive => {
+		if (onlyActive && filters.sortBy === 3)
+			setFilters({ ...filters, onlyActive, sortBy: 0 });
+		else setFilters({ ...filters, onlyActive });
+	};
 	const setSortBy = sortBy => setFilters({ ...filters, sortBy });
 
 	return { ...filters, setSearch, setOnlyActive, setSortBy };
@@ -52,7 +56,7 @@ const filterUsersByName = (users, search) => {
 	const lowerCasedSearch = search.toLowerCase();
 
 	return users.filter(user =>
-		user.name.toLowerCase().startsWith(lowerCasedSearch)
+		user.name.toLowerCase().includes(lowerCasedSearch)
 	);
 };
 
@@ -70,6 +74,19 @@ const sortUsers = (users, sortBy) => {
 				if (a.name > b.name) return 1;
 				if (a.name < b.name) return -1;
 				return 0;
+			});
+		case 2:
+			return sortUsers.sort((a, b) => {
+				if (a.role === b.role) return 0;
+				if (a.role === 'teacher' || (a.role !== 'other' && b.role === 'other'))
+					return -1;
+				return 1;
+			});
+		case 3:
+			return sortUsers.sort((a, b) => {
+				if (a.active === b.active) return 0;
+				if (a.active) return -1;
+				return 1;
 			});
 
 		default:

@@ -1,0 +1,30 @@
+.wrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.select {
+	height: 2.5rem;
+	width: 100%;
+	padding: 0.5rem 3rem 0.5rem 1rem;
+	border: none;
+	outline: none;
+	border-radius: var(--radius-sm);
+	box-shadow: var(--shadow-sm);
+	background-color: var(--color-white);
+	appearance: none;
+	cursor: pointer;
+}
+
+.select:focus {
+	box-shadow: var(--shadow-md);
+}
+
+.icon {
+	height: 1.5rem;
+	width: 1.5rem;
+	position: absolute;
+	right: 1rem;
+	pointer-events: none;
+}

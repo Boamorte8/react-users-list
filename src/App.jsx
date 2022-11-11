@@ -7,15 +7,15 @@ const USERS = [
 		active: true,
 		role: 'teacher'
 	},
+	{ username: 'cata', name: 'Catalina Osorno', active: false, role: 'other' },
 	{
 		username: 'jose',
 		name: 'Jose Miguel Fernández',
 		active: true,
 		role: 'teacher'
 	},
-	{ username: 'teban', name: 'Esteban Salazar', active: true, role: 'student' },
-	{ username: 'cata', name: 'Catalina Osorno', active: false, role: 'other' },
 	{ username: 'milo', name: 'Camilo Guerra', active: false, role: 'student' },
+	{ username: 'teban', name: 'Esteban Salazar', active: true, role: 'student' },
 	{
 		username: 'cristian',
 		name: 'Cristian Ospina',
