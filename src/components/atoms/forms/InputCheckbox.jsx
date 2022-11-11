@@ -3,7 +3,6 @@ import style from './InputCheckbox.module.css';
 
 const InputCheckbox = ({ className, ...props }) => (
 	<label className={`${style.label} ${className || ''}`}>
-		{/* <SearchIcon className={style.icon} /> */}
 		<input {...props} type='checkbox' className={style.input} />
 		<CheckIcon className={style.check} />
 	</label>

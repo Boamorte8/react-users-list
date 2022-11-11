@@ -1,26 +1,42 @@
-import UsersList from './components/organisms/UsersList';
+import UsersList from '#Components/organisms/UsersList';
+import { USER_ROLES } from '#Constants/userRoles.js';
 
 const USERS = [
 	{
 		username: 'pablo',
 		name: 'Pablo Castellanos',
 		active: true,
-		role: 'teacher'
+		role: USER_ROLES.TEACHER
 	},
-	{ username: 'cata', name: 'Catalina Osorno', active: false, role: 'other' },
+	{
+		username: 'cata',
+		name: 'Catalina Osorno',
+		active: false,
+		role: USER_ROLES.OTHER
+	},
 	{
 		username: 'jose',
 		name: 'Jose Miguel Fernández',
 		active: true,
-		role: 'teacher'
+		role: USER_ROLES.TEACHER
 	},
-	{ username: 'milo', name: 'Camilo Guerra', active: false, role: 'student' },
-	{ username: 'teban', name: 'Esteban Salazar', active: true, role: 'student' },
+	{
+		username: 'milo',
+		name: 'Camilo Guerra',
+		active: false,
+		role: USER_ROLES.STUDENT
+	},
+	{
+		username: 'teban',
+		name: 'Esteban Salazar',
+		active: true,
+		role: USER_ROLES.STUDENT
+	},
 	{
 		username: 'cristian',
 		name: 'Cristian Ospina',
 		active: false,
-		role: 'student'
+		role: USER_ROLES.STUDENT
 	}
 ];
 
