@@ -1,5 +1,5 @@
-import UsersList from '#Components/organisms/UsersList';
-import { USER_ROLES } from '#Constants/userRoles.js';
+import UsersList from './components/organisms/UsersList.jsx';
+import { USER_ROLES } from './constants/userRoles.js';
 
 const USERS = [
 	{

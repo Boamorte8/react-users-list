@@ -37,11 +37,6 @@
 		"prettier": "2.7.1",
 		"vite": "3.2.3"
 	},
-	"imports": {
-		"#Constants/*": "./src/constants/*",
-		"#Components/*": "./src/components/*",
-		"#Lib/*": "./src/lib/*"
-	},
 	"lint-staged": {
 		"*.js": "eslint --fix",
 		"*.{js,md}": "prettier --write"

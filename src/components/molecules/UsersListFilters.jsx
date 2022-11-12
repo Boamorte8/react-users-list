@@ -1,4 +1,4 @@
-import { SORT_OPTIONS } from '#Constants/sortOptions';
+import { SORT_OPTIONS } from '../../constants/sortOptions';
 import InputCheckbox from '../atoms/forms/InputCheckbox';
 import InputSearch from '../atoms/forms/InputSearch';
 import InputSelect from '../atoms/forms/InputSelect';

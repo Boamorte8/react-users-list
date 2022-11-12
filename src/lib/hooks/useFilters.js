@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { SORT_OPTIONS } from '#Constants/sortOptions.js';
+import { SORT_OPTIONS } from '../../constants/sortOptions.js';
 
 export const useFilters = () => {
 	const [filters, setFilters] = useState({
