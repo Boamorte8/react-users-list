@@ -9,7 +9,7 @@ const UsersListPagination = ({
 	setItemsPerPage,
 	pages
 }) => {
-	const optionsItems = [2, 3, 4];
+	const optionsItems = [4, 6, 8];
 	const items = optionsItems.map(item => (
 		<option value={item} key={item}>
 			{item}
