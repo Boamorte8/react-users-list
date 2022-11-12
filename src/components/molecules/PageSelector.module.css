@@ -1,0 +1,13 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.arrowLeft {
+	transform: rotate(90deg);
+}
+
+.arrowRight {
+	transform: rotate(270deg);
+}

@@ -1,13 +1,13 @@
-import IconButton from '../atoms/buttons/IconButton.jsx';
 import InputSelect from '../atoms/forms/InputSelect.jsx';
-import ArrowDownIcon from '../atoms/icons/ArrowDownIcon.jsx';
+import PageSelector from './PageSelector.jsx';
 import style from './UsersListPagination.module.css';
 
 const UsersListPagination = ({
 	page,
 	itemsPerPage,
 	setPage,
-	setItemsPerPage
+	setItemsPerPage,
+	pages
 }) => {
 	const optionsItems = [2, 3, 4];
 	const items = optionsItems.map(item => (
@@ -27,7 +27,7 @@ const UsersListPagination = ({
 				</InputSelect>
 				<p>Elements per page</p>
 			</div>
-			<IconButton icon={ArrowDownIcon} />
+			<PageSelector pages={pages} page={page} setPage={setPage} />
 		</div>
 	);
 };

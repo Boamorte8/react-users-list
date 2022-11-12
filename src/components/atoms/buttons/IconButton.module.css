@@ -11,10 +11,16 @@
 	align-items: center;
 
 	background-color: transparent;
+	cursor: pointer;
 }
 
-.button.black {
-	background-color: var(--color-black);
+.button:disabled {
+	cursor: default;
+}
+
+.button:hover:not(:disabled),
+.button:focus:not(:disabled) {
+	box-shadow: var(--shadow-sm);
 }
 
 .icon {
@@ -22,6 +28,38 @@
 	width: 1.25rem;
 }
 
-.filledIcon {
+.normal {
+	color: var(--color-black);
+}
+
+.error {
+	color: var(--color-red);
+}
+
+.normal,
+.error {
+	background-color: transparent;
+}
+
+.normal:disabled,
+.error:disabled {
+	color: var(--color-lightgray);
+}
+
+.normalFilled {
+	background-color: var(--color-black);
+}
+
+.errorFilled {
+	background-color: var(--color-red);
+}
+
+.normalFilled,
+.errorFilled {
 	color: var(--color-white);
+}
+
+.normalFilled:disabled,
+.errorFilled:disabled {
+	background-color: var(--color-lightgray);
 }
