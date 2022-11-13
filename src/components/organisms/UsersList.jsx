@@ -1,16 +1,11 @@
 import { useFilters } from '../../lib/hooks/useFilters.js';
-import {
-	filterUsersByActive,
-	filterUsersByName,
-	paginateUsers,
-	sortUsers
-} from '../../lib/users/filterUsers.js';
+import { useUsers } from '../../lib/hooks/useUsers.js';
 import UsersListFilters from '../molecules/UsersListFilters';
 import UsersListPagination from '../molecules/UsersListPagination.jsx';
 import UsersListRows from '../molecules/UsersListRows';
 import style from './UsersList.module.css';
 
-const UsersList = ({ initialUsers }) => {
+const UsersList = () => {
 	const {
 		search,
 		onlyActive,
@@ -22,7 +17,7 @@ const UsersList = ({ initialUsers }) => {
 		...setFiltersFunctions
 	} = useFilters();
 
-	const { users, pages } = getUsers(initialUsers, {
+	const { users, pages, error, loading } = useUsers({
 		onlyActive,
 		search,
 		sortBy,
@@ -47,23 +42,10 @@ const UsersList = ({ initialUsers }) => {
 				sortBy={sortBy}
 				{...setFiltersFunctions}
 			/>
-			<UsersListRows users={users} />
+			<UsersListRows users={users} error={error} loading={loading} />
 			<UsersListPagination {...pagination} />
 		</div>
 	);
-};
-
-const getUsers = (
-	initialUsers,
-	{ onlyActive, search, sortBy, page, itemsPerPage }
-) => {
-	let usersFiltered = filterUsersByActive(initialUsers, onlyActive);
-	usersFiltered = filterUsersByName(usersFiltered, search);
-	usersFiltered = sortUsers(usersFiltered, sortBy);
-	const pages = Math.ceil(usersFiltered.length / itemsPerPage);
-	usersFiltered = paginateUsers(usersFiltered, page, itemsPerPage);
-
-	return { users: usersFiltered, pages };
 };
 
 export default UsersList;
