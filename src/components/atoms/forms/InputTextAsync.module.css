@@ -14,7 +14,7 @@
 	height: 2.5rem;
 	width: 100%;
 	padding: 0.5rem 1rem;
-	margin: 0.5rem 0;
+	margin: 0.5rem 0 0;
 	padding-right: 3rem;
 
 	border: 1px solid transparent;
@@ -36,7 +36,7 @@
 }
 
 .error {
-	margin: 0;
+	margin: 0.5rem 0 0;
 	padding-left: 0.5rem;
 	color: var(--color-red);
 	line-height: 1.3125rem;
@@ -55,6 +55,7 @@
 
 .loadingIcon {
 	color: var(--color-gray);
+	animation: rotate-center 1.2s linear infinite both;
 }
 
 .successIcon {
@@ -63,4 +64,13 @@
 
 .errorIcon {
 	color: var(--color-red);
+}
+
+@keyframes rotate-center {
+	0% {
+		transform: rotate(360deg);
+	}
+	100% {
+		transform: rotate(0);
+	}
 }

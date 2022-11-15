@@ -10,7 +10,8 @@ const UsersListFilters = ({
 	onlyActive,
 	setOnlyActive,
 	sortBy,
-	setSortBy
+	setSortBy,
+	slot
 }) => {
 	return (
 		<div className={style.form}>
@@ -46,6 +47,7 @@ const UsersListFilters = ({
 					/>
 					<p>Display only actives</p>
 				</div>
+				{slot}
 			</div>
 		</div>
 	);
