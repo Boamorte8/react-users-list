@@ -1,42 +1,8 @@
 import { useEffect, useState } from 'react';
-import {
-	filterUsersByActive,
-	filterUsersByName,
-	paginateUsers,
-	sortUsers
-} from '../users/filterUsers';
 
-const fetchUsers = async (setUsers, setError, signal) => {
-	try {
-		const res = await fetch('http://localhost:4000/users', { signal });
-		if (res.ok) {
-			const data = await res.json();
-			setUsers(data);
-		} else {
-			setError();
-		}
-	} catch (error) {
-		setError();
-	}
-};
+import { findAllUsers } from '../api/usersApi';
 
-const getDisplayUsers = (
-	users,
-	{ onlyActive, search, sortBy, page, itemsPerPage }
-) => {
-	let usersFiltered = filterUsersByActive(users, onlyActive);
-	usersFiltered = filterUsersByName(usersFiltered, search);
-	usersFiltered = sortUsers(usersFiltered, sortBy);
-	const { paginatedUsers, pages } = paginateUsers(
-		usersFiltered,
-		page,
-		itemsPerPage
-	);
-
-	return { paginatedUsers, pages };
-};
-
-export const useUsers = filters => {
+export const useUsers = () => {
 	const [{ data, error, loading }, setUsers] = useState({
 		data: [],
 		error: false,
@@ -46,15 +12,22 @@ export const useUsers = filters => {
 	const setData = newData =>
 		setUsers({ data: newData, error: false, loading: false });
 	const setError = () => setUsers({ data: [], error: true, loading: false });
+	const reloadUsers = () => setUsers({ data: [], error: false, loading: true });
 
 	useEffect(() => {
+		if (!loading) return;
 		const controller = new AbortController();
 
-		fetchUsers(setData, setError, controller.signal);
+		loadUsers(setData, setError, controller.signal);
 		return () => controller.abort();
-	}, []);
+	}, [loading]);
 
-	const { paginatedUsers, pages } = getDisplayUsers(data, filters);
+	return { users: data, usersError: error, usersLoading: loading, reloadUsers };
+};
 
-	return { users: paginatedUsers, pages, error, loading };
+const loadUsers = async (setUsers, setError, signal) => {
+	const { users, aborted } = await findAllUsers(signal);
+	if (aborted) return;
+	if (users) setUsers(users);
+	else setError();
 };
