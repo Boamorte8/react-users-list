@@ -11,6 +11,8 @@ import {
 } from '../../lib/users/filterUsers.js';
 import Button from '../atoms/buttons/Button.jsx';
 import UserCreateForm from '../molecules/user-forms/UserCreateForm.jsx';
+import UserDeleteForm from '../molecules/user-forms/UserDeleteForm.jsx';
+import UserEditForm from '../molecules/user-forms/UserEditForm.jsx';
 import UserFormLayout from '../molecules/user-forms/UserFormLayout.jsx';
 import UsersListFilters from '../molecules/UsersListFilters';
 import UsersListPagination from '../molecules/UsersListPagination.jsx';
@@ -20,6 +22,7 @@ import style from './UsersList.module.css';
 const UsersList = () => {
 	const {
 		currentForm,
+		currentUser,
 		setFiltersForm,
 		setCreateForm,
 		setEditForm,
@@ -55,13 +58,27 @@ const UsersList = () => {
 				/>
 			) : (
 				<UserFormLayout onClose={setFiltersForm}>
-					<UserCreateForm onClose={setFiltersForm} onSuccess={onSuccess} />
+					{currentForm === USER_FORMS.CREATE && (
+						<UserCreateForm onSuccess={onSuccess} />
+					)}
+					{currentForm === USER_FORMS.EDIT && (
+						<UserEditForm onSuccess={onSuccess} user={currentUser} />
+					)}
+					{currentForm === USER_FORMS.DELETE && (
+						<UserDeleteForm
+							onSuccess={onSuccess}
+							onClose={setFiltersForm}
+							user={currentUser}
+						/>
+					)}
 				</UserFormLayout>
 			)}
 			<UsersListRows
 				users={paginatedUsers}
 				error={usersError}
 				loading={usersLoading}
+				setEditForm={setEditForm}
+				setDeleteForm={setDeleteForm}
 			/>
 			<UsersListPagination
 				{...pagination}
@@ -90,15 +107,17 @@ const getDisplayUsers = (
 };
 
 const useForm = () => {
-	const [currentForm, setCurrentForm] = useState(USER_FORMS.FILTERS);
+	const [currentForm, setCurrentForm] = useState({ form: USER_FORMS.FILTERS });
 
-	const setFiltersForm = () => setCurrentForm(USER_FORMS.FILTERS);
-	const setCreateForm = () => setCurrentForm(USER_FORMS.CREATE);
-	const setEditForm = () => setCurrentForm(USER_FORMS.EDIT);
-	const setDeleteForm = () => setCurrentForm(USER_FORMS.DELETE);
+	const setFiltersForm = () => setCurrentForm({ form: USER_FORMS.FILTERS });
+	const setCreateForm = () => setCurrentForm({ form: USER_FORMS.CREATE });
+	const setEditForm = user => setCurrentForm({ form: USER_FORMS.EDIT, user });
+	const setDeleteForm = user =>
+		setCurrentForm({ form: USER_FORMS.DELETE, user });
 
 	return {
-		currentForm,
+		currentForm: currentForm.form,
+		currentUser: currentForm.user,
 		setFiltersForm,
 		setCreateForm,
 		setEditForm,

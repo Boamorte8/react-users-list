@@ -3,39 +3,32 @@ import { useEffect, useState } from 'react';
 import { findUserByUsername } from '../api/usersApi';
 import { validateName, validateUsername } from '../users/userValidations';
 
-export const useCreateForm = () => {
-	const [formValues, setFormValues] = useState({
-		name: {
-			value: '',
-			error: undefined
-		},
-		username: {
-			value: '',
-			loading: false,
-			error: undefined
-		}
-	});
-
-	const { name, username } = formValues;
+export const useEditForm = ({ name, username, active, role }) => {
+	const [formValues, setFormValues] = useState(() =>
+		getInitialState({ name, username, active, role })
+	);
 
 	const isFormInvalid =
-		!name.value ||
-		!!name.error ||
-		!username.value ||
-		!!username.error ||
-		username.loading;
+		areInitialValues(formValues, { name, username, active, role }) ||
+		!!formValues.name.error ||
+		!!formValues.username.error ||
+		formValues.username.loading;
 
 	const setName = name => {
 		const error = validateName(name);
 		setFormValues({ ...formValues, name: { value: name, error } });
 	};
-	const setUsername = username => {
-		const error = validateUsername(username);
+	const setUsername = newUsername => {
+		const error = validateUsername(newUsername);
+		const isInitial = newUsername === username;
 		setFormValues({
 			...formValues,
-			username: { value: username, loading: !error, error }
+			username: { value: newUsername, loading: !error && !isInitial, error }
 		});
 	};
+
+	const setActive = active => setFormValues({ ...formValues, active });
+	const setRole = role => setFormValues({ ...formValues, role });
 
 	const setUsernameError = error =>
 		setFormValues(prevFormValues => ({
@@ -46,6 +39,13 @@ export const useCreateForm = () => {
 				error
 			}
 		}));
+
+	useEffect(() => {
+		setFormValues(getInitialState({ name, username, active, role }));
+		// return () => {
+		// 	cleanup
+		// };
+	}, [name, username, active, role]);
 
 	useEffect(() => {
 		if (!formValues.username.loading) return;
@@ -68,9 +68,31 @@ export const useCreateForm = () => {
 		...formValues,
 		isFormInvalid,
 		setName,
-		setUsername
+		setUsername,
+		setActive,
+		setRole
 	};
 };
+
+const getInitialState = ({ name, username, active, role }) => ({
+	name: {
+		value: name,
+		error: undefined
+	},
+	username: {
+		value: username,
+		loading: false,
+		error: undefined
+	},
+	active,
+	role
+});
+
+const areInitialValues = (formValues, user) =>
+	formValues.name.value === user.name &&
+	formValues.username.value === user.username &&
+	formValues.role === user.role &&
+	formValues.active === user.active;
 
 const validateUsernameIsAvailable = async (
 	username,

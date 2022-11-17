@@ -1,0 +1,10 @@
+.row {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.text {
+	margin-top: 0;
+	margin-bottom: 1.5rem;
+}

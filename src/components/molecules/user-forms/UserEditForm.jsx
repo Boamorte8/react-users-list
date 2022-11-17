@@ -1,23 +1,43 @@
 import { useState } from 'react';
 
 import { USER_ROLES } from '../../../constants/userRoles';
-import { createUser } from '../../../lib/api/usersApi';
-import { useCreateForm } from '../../../lib/hooks/useCreateForm';
+import { updateUser } from '../../../lib/api/usersApi';
+import { useEditForm } from '../../../lib/hooks/useEditForm';
 import Button from '../../atoms/buttons/Button';
 import InputCheckbox from '../../atoms/forms/InputCheckbox';
 import InputSelect from '../../atoms/forms/InputSelect';
 import InputText from '../../atoms/forms/InputText';
 import InputTextAsync from '../../atoms/forms/InputTextAsync';
-import style from './UserCreateForm.module.css';
+import style from './UserEditForm.module.css';
 
-const UserCreateForm = ({ onSuccess }) => {
+const UserEditForm = ({ onSuccess, user }) => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const { name, username, isFormInvalid, setName, setUsername } =
-		useCreateForm();
+	const {
+		name,
+		username,
+		active,
+		role,
+		isFormInvalid,
+		setName,
+		setUsername,
+		setActive,
+		setRole
+	} = useEditForm(user);
 	return (
 		<form
 			onSubmit={ev =>
-				handleSubmit(ev, name, username, setIsSubmitting, onSuccess)
+				handleSubmit(
+					ev,
+					{
+						id: user.id,
+						name: name.value,
+						username: username.value,
+						active,
+						role
+					},
+					setIsSubmitting,
+					onSuccess
+				)
 			}
 		>
 			<div className={style.row}>
@@ -38,52 +58,57 @@ const UserCreateForm = ({ onSuccess }) => {
 					className={style.input}
 					error={username.error}
 					loading={username.loading}
-					success={username.value && !username.loading && !username.error}
+					success={
+						username.value !== user.username &&
+						!username.loading &&
+						!username.error
+					}
 					value={username.value}
 					onChange={ev => setUsername(ev.target.value)}
 				/>
 			</div>
 
 			<div className={style.row}>
-				<InputSelect name='role'>
+				<InputSelect
+					name='role'
+					value={role}
+					onChange={ev => setRole(ev.target.value)}
+				>
 					<option value={USER_ROLES.TEACHER}>Teacher</option>
 					<option value={USER_ROLES.STUDENT}>Student</option>
 					<option value={USER_ROLES.OTHER}>Other</option>
 				</InputSelect>
 
 				<div className={style.active}>
-					<InputCheckbox name='active' className={style.checkbox} />
+					<InputCheckbox
+						name='active'
+						className={style.checkbox}
+						checked={active}
+						onChange={ev => setActive(ev.target.checked)}
+					/>
 					<span>¿Active?</span>
 				</div>
 
 				<Button type='submit' disabled={isFormInvalid || isSubmitting}>
-					{isSubmitting ? 'Loading...' : 'Create user'}
+					{isSubmitting ? 'Loading...' : 'Edit user'}
 				</Button>
 			</div>
 		</form>
 	);
 };
 
-const handleSubmit = async (ev, name, username, setIsSubmitting, onSuccess) => {
+const handleSubmit = async (ev, user, setIsSubmitting, onSuccess) => {
 	ev.preventDefault();
 
 	setIsSubmitting(true);
 
-	const user = {
-		id: crypto.randomUUID(),
-		name: name.value,
-		username: username.value,
-		role: ev.target.role.value,
-		active: ev.target.active.checked
-	};
+	const edited = await updateUser(user);
 
-	const created = await createUser(user);
-
-	if (created) {
+	if (edited) {
 		onSuccess();
 	} else {
 		setIsSubmitting(false);
 	}
 };
 
-export default UserCreateForm;
+export default UserEditForm;
