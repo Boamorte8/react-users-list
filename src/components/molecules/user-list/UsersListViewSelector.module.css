@@ -1,0 +1,42 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 0.5rem;
+
+	margin-bottom: 1rem;
+}
+
+.button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-lightgray);
+
+	border: none;
+	outline: none;
+	background: none;
+}
+
+.button:first-child {
+	position: relative;
+}
+
+.button:disabled {
+	color: var(--color-black);
+}
+
+.button:first-child::after {
+	content: '';
+	height: 2.5rem;
+	width: 2px;
+	background-color: var(--color-black);
+	position: absolute;
+	right: -0.25rem;
+}
+
+.icon {
+	width: 2.5rem;
+	height: 2.5rem;
+	line-height: 2.5rem;
+}

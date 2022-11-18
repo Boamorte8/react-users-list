@@ -1,5 +1,5 @@
-import InputSelect from '../atoms/forms/InputSelect.jsx';
-import PageSelector from './PageSelector.jsx';
+import InputSelect from '../../atoms/forms/InputSelect.jsx';
+import PageSelector from '../PageSelector.jsx';
 import style from './UsersListPagination.module.css';
 
 const UsersListPagination = ({
