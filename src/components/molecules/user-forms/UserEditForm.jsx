@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { USER_ROLES } from '../../../constants/userRoles';
 import { updateUser } from '../../../lib/api/usersApi';
+import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
 import { useEditForm } from '../../../lib/hooks/useEditForm';
 import Button from '../../atoms/buttons/Button';
 import InputCheckbox from '../../atoms/forms/InputCheckbox';
@@ -10,7 +11,8 @@ import InputText from '../../atoms/forms/InputText';
 import InputTextAsync from '../../atoms/forms/InputTextAsync';
 import style from './UserEditForm.module.css';
 
-const UserEditForm = ({ onSuccess, user }) => {
+const UserEditForm = () => {
+	const { currentUser, onSuccess } = useContext(UserFormsContext);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const {
 		name,
@@ -22,14 +24,14 @@ const UserEditForm = ({ onSuccess, user }) => {
 		setUsername,
 		setActive,
 		setRole
-	} = useEditForm(user);
+	} = useEditForm(currentUser);
 	return (
 		<form
 			onSubmit={ev =>
 				handleSubmit(
 					ev,
 					{
-						id: user.id,
+						id: currentUser.id,
 						name: name.value,
 						username: username.value,
 						active,
@@ -59,7 +61,7 @@ const UserEditForm = ({ onSuccess, user }) => {
 					error={username.error}
 					loading={username.loading}
 					success={
-						username.value !== user.username &&
+						username.value !== currentUser.username &&
 						!username.loading &&
 						!username.error
 					}

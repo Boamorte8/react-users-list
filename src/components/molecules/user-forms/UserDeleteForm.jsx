@@ -1,16 +1,21 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { deleteUser } from '../../../lib/api/usersApi';
+import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
 import { useEditForm } from '../../../lib/hooks/useEditForm';
 import Button from '../../atoms/buttons/Button';
 import style from './UserDeleteForm.module.css';
 
-const UserDeleteForm = ({ onSuccess, onClose, user }) => {
+const UserDeleteForm = () => {
+	const { currentUser, setFiltersForm, onSuccess } =
+		useContext(UserFormsContext);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const { name } = useEditForm(user);
+	const { name } = useEditForm(currentUser);
 	return (
 		<form
-			onSubmit={ev => handleSubmit(ev, user.id, setIsSubmitting, onSuccess)}
+			onSubmit={ev =>
+				handleSubmit(ev, currentUser.id, setIsSubmitting, onSuccess)
+			}
 		>
 			<p
 				className={style.text}
@@ -21,7 +26,7 @@ const UserDeleteForm = ({ onSuccess, onClose, user }) => {
 					type='button'
 					kind='secondary'
 					disabled={isSubmitting}
-					onClick={() => onClose()}
+					onClick={setFiltersForm}
 				>
 					{isSubmitting ? 'Loading...' : 'Cancel'}
 				</Button>
