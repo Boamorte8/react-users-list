@@ -25,18 +25,8 @@ export const useFilters = () => {
 		setFilters({ ...filters, itemsPerPage, page: 1 });
 	const resetFilters = () => setFilters({ ...INITIAL_STATE });
 
-	const { search, onlyActive, sortBy, page, itemsPerPage } = filters;
-
 	return {
-		filters: {
-			search,
-			onlyActive,
-			sortBy
-		},
-		pagination: {
-			page,
-			itemsPerPage
-		},
+		filters,
 		filtersSetters: {
 			setSearch,
 			setOnlyActive,

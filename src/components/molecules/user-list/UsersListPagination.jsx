@@ -7,7 +7,7 @@ const UsersListPagination = ({
 	itemsPerPage,
 	setPage,
 	setItemsPerPage,
-	pages
+	totalUsers
 }) => {
 	const optionsItems = [4, 6, 8];
 	const items = optionsItems.map(item => (
@@ -27,7 +27,11 @@ const UsersListPagination = ({
 				</InputSelect>
 				<p>Elements per page</p>
 			</div>
-			<PageSelector pages={pages} page={page} setPage={setPage} />
+			<PageSelector
+				pages={Math.ceil(totalUsers / itemsPerPage)}
+				page={page}
+				setPage={setPage}
+			/>
 		</div>
 	);
 };
