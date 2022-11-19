@@ -10,11 +10,11 @@ import UserFormsProvider from '../providers/UserFormsProvider.jsx';
 import style from './UsersList.module.css';
 
 const UsersList = () => {
-	const [view, setView] = useState(true);
+	const [showRowsFormat, setShowRowsFormat] = useState(true);
 	const { filters, filtersSetters, paginationSetters, resetFilters } =
 		useFilters();
 
-	const { users, usersCount, usersError, usersLoading } = useUsers(filters);
+	const { users, totalUsers, usersError, usersLoading } = useUsers(filters);
 
 	// Pagination on client side
 	// const { paginatedUsers, pages } = getDisplayUsers(users, filters, pagination);
@@ -33,20 +33,23 @@ const UsersList = () => {
 					{...filtersSetters}
 				/>
 				<UserFormContainer />
-				<UsersListViewSelector view={view} setView={setView} />
+				<UsersListViewSelector
+					showRowsFormat={showRowsFormat}
+					setShowRowsFormat={setShowRowsFormat}
+				/>
 				<UsersListRows
 					users={users}
 					// users={paginatedUsers}
 					error={usersError}
 					loading={usersLoading}
-					view={view}
+					showRowsFormat={showRowsFormat}
 				/>
 			</UserFormsProvider>
 
 			<UsersListPagination
 				page={page}
 				itemsPerPage={itemsPerPage}
-				totalUsers={usersCount}
+				totalUsers={totalUsers}
 				{...paginationSetters}
 			/>
 		</div>

@@ -1,3 +1,4 @@
+import { PAGINATION } from '../../../constants/pagination.js';
 import InputSelect from '../../atoms/forms/InputSelect.jsx';
 import PageSelector from '../PageSelector.jsx';
 import style from './UsersListPagination.module.css';
@@ -9,8 +10,7 @@ const UsersListPagination = ({
 	setItemsPerPage,
 	totalUsers
 }) => {
-	const optionsItems = [4, 6, 8];
-	const items = optionsItems.map(item => (
+	const items = PAGINATION.ITEMS_PER_PAGE_VALUES.map(item => (
 		<option value={item} key={item}>
 			{item}
 		</option>

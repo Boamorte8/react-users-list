@@ -24,7 +24,7 @@ export const useUsers = filters => {
 
 	return {
 		users: data,
-		usersCount: count,
+		totalUsers: count,
 		usersError: error,
 		usersLoading: loading
 	};
