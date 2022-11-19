@@ -51,10 +51,10 @@ const getFindAllUrl = ({ page, itemsPerPage, search, onlyActive, sortBy }) => {
 	if (search) url.searchParams.append('name_like', search);
 	if (onlyActive) url.searchParams.append('active', true);
 
-	const [sort, order] = SORT_MAPPER[sortBy];
-	if (sort) {
-		url.searchParams.append('_sort', sort);
-		url.searchParams.append('_order', order);
+	const sortProps = SORT_MAPPER[sortBy];
+	if (sortProps) {
+		url.searchParams.append('_sort', sortProps[0]);
+		url.searchParams.append('_order', sortProps[1]);
 	}
 	return url;
 };
