@@ -59,6 +59,10 @@ After creating the repository and cloning it locally
 npm i
 ```
 
+## Resources
+
+- [Design System](https://www.figma.com/file/FpCbTivcYMoVDfnIDI0Jmp/LearnThis---Curso-React-desde-cero--Pr%C3%A1ctica-1?node-id=238%3A2943&t=cRZz0hSheHYyHrME-0) -- This app design system
+
 <!-- LICENSE -->
 
 ## License
