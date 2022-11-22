@@ -3,7 +3,10 @@ import { useContext, useState } from 'react';
 import { USER_ROLES } from '../../../constants/userRoles';
 import { createUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
-import { useCreateForm } from '../../../lib/hooks/useCreateForm';
+import {
+	CREATE_FORM_ACTIONS,
+	useCreateForm
+} from '../../../lib/hooks/useCreateForm';
 import Button from '../../atoms/buttons/Button';
 import InputCheckbox from '../../atoms/forms/InputCheckbox';
 import InputSelect from '../../atoms/forms/InputSelect';
@@ -14,8 +17,7 @@ import style from './UserCreateForm.module.css';
 const UserCreateForm = () => {
 	const { onSuccess } = useContext(UserFormsContext);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const { name, username, isFormInvalid, setName, setUsername } =
-		useCreateForm();
+	const { name, username, isFormInvalid, dispatchCreateForm } = useCreateForm();
 	return (
 		<form
 			onSubmit={ev =>
@@ -30,7 +32,12 @@ const UserCreateForm = () => {
 					className={style.input}
 					error={name.error}
 					value={name.value}
-					onChange={ev => setName(ev.target.value)}
+					onChange={ev =>
+						dispatchCreateForm({
+							type: CREATE_FORM_ACTIONS.NAME_CHANGED,
+							value: ev.target.value
+						})
+					}
 				/>
 
 				<InputTextAsync
@@ -42,7 +49,12 @@ const UserCreateForm = () => {
 					loading={username.loading}
 					success={username.value && !username.loading && !username.error}
 					value={username.value}
-					onChange={ev => setUsername(ev.target.value)}
+					onChange={ev =>
+						dispatchCreateForm({
+							type: CREATE_FORM_ACTIONS.USERNAME_CHANGED,
+							value: ev.target.value
+						})
+					}
 				/>
 			</div>
 

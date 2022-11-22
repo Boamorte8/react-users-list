@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useFilters } from '../../lib/hooks/useFilters.js';
+
+import { FILTERS_ACTIONS, useFilters } from '../../lib/hooks/useFilters.js';
 import { useUsers } from '../../lib/hooks/useUsers.js';
 import UserFormContainer from '../molecules/user-forms/UserFormContainer.jsx';
 import UsersListFilters from '../molecules/user-list/UsersListFilters';
@@ -11,13 +12,9 @@ import style from './UsersList.module.css';
 
 const UsersList = () => {
 	const [showRowsFormat, setShowRowsFormat] = useState(true);
-	const { filters, filtersSetters, paginationSetters, resetFilters } =
-		useFilters();
+	const { filters, dispatchFilters } = useFilters();
 
 	const { users, totalUsers, usersError, usersLoading } = useUsers(filters);
-
-	// Pagination on client side
-	// const { paginatedUsers, pages } = getDisplayUsers(users, filters, pagination);
 
 	const { search, onlyActive, sortBy, page, itemsPerPage } = filters;
 
@@ -25,12 +22,16 @@ const UsersList = () => {
 		<div className={style.wrapper}>
 			<h1 className={style.title}>User List</h1>
 
-			<UserFormsProvider resetFilters={resetFilters}>
+			<UserFormsProvider
+				resetFilters={() =>
+					dispatchFilters({ type: FILTERS_ACTIONS.RESET_FILTERS })
+				}
+			>
 				<UsersListFilters
 					search={search}
 					onlyActive={onlyActive}
 					sortBy={sortBy}
-					{...filtersSetters}
+					dispatchFilters={dispatchFilters}
 				/>
 				<UserFormContainer />
 				<UsersListViewSelector
@@ -39,7 +40,6 @@ const UsersList = () => {
 				/>
 				<UsersListRows
 					users={users}
-					// users={paginatedUsers}
 					error={usersError}
 					loading={usersLoading}
 					showRowsFormat={showRowsFormat}
@@ -50,7 +50,7 @@ const UsersList = () => {
 				page={page}
 				itemsPerPage={itemsPerPage}
 				totalUsers={totalUsers}
-				{...paginationSetters}
+				dispatchFilters={dispatchFilters}
 			/>
 		</div>
 	);

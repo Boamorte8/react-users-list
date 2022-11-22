@@ -1,51 +1,74 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import { findUserByUsername } from '../api/usersApi';
 import { validateName, validateUsername } from '../users/userValidations';
 
-export const useEditForm = ({ name, username, active, role }) => {
-	const [formValues, setFormValues] = useState(() =>
-		getInitialState({ name, username, active, role })
+export const EDIT_FORM_ACTIONS = {
+	NAME_CHANGED: 'NAME_CHANGED',
+	USERNAME_CHANGED: 'USERNAME_CHANGED',
+	ACTIVE_CHANGED: 'ACTIVE_CHANGED',
+	ROLE_CHANGED: 'ROLE_CHANGED',
+	USERNAME_ERROR_CHANGED: 'USERNAME_ERROR_CHANGED',
+	REPLACE: 'REPLACE'
+};
+
+const editFormReducer = (state, action) => {
+	switch (action.type) {
+		case EDIT_FORM_ACTIONS.NAME_CHANGED: {
+			const error = validateName(action.value);
+			return { ...state, name: { value: action.value, error } };
+		}
+		case EDIT_FORM_ACTIONS.USERNAME_CHANGED: {
+			const error = validateUsername(action.value);
+			const isInitial = action.value === action.currentUsername;
+			return {
+				...state,
+				username: {
+					value: action.value,
+					loading: !error && !isInitial,
+					error
+				}
+			};
+		}
+		case EDIT_FORM_ACTIONS.ACTIVE_CHANGED:
+			return { ...state, active: action.value };
+		case EDIT_FORM_ACTIONS.ROLE_CHANGED:
+			return { ...state, role: action.value };
+		case EDIT_FORM_ACTIONS.USERNAME_ERROR_CHANGED:
+			return {
+				...state,
+				username: {
+					value: state.username.value,
+					loading: false,
+					error: action.value
+				}
+			};
+		case EDIT_FORM_ACTIONS.REPLACE:
+			return action.value;
+		default:
+			throw new Error('Invalid action type');
+	}
+};
+
+export const useEditForm = user => {
+	const [formValues, dispatchEditForm] = useReducer(
+		editFormReducer,
+		user,
+		getInitialState
 	);
 
 	const isFormInvalid =
-		areInitialValues(formValues, { name, username, active, role }) ||
+		areInitialValues(formValues, user) ||
 		!!formValues.name.error ||
 		!!formValues.username.error ||
 		formValues.username.loading;
 
-	const setName = name => {
-		const error = validateName(name);
-		setFormValues({ ...formValues, name: { value: name, error } });
-	};
-	const setUsername = newUsername => {
-		const error = validateUsername(newUsername);
-		const isInitial = newUsername === username;
-		setFormValues({
-			...formValues,
-			username: { value: newUsername, loading: !error && !isInitial, error }
-		});
-	};
-
-	const setActive = active => setFormValues({ ...formValues, active });
-	const setRole = role => setFormValues({ ...formValues, role });
-
-	const setUsernameError = error =>
-		setFormValues(prevFormValues => ({
-			...prevFormValues,
-			username: {
-				value: prevFormValues.username.value,
-				loading: false,
-				error
-			}
-		}));
-
 	useEffect(() => {
-		setFormValues(getInitialState({ name, username, active, role }));
-		// return () => {
-		// 	cleanup
-		// };
-	}, [name, username, active, role]);
+		dispatchEditForm({
+			type: EDIT_FORM_ACTIONS.REPLACE,
+			value: getInitialState(user)
+		});
+	}, [user]);
 
 	useEffect(() => {
 		if (!formValues.username.loading) return;
@@ -54,7 +77,7 @@ export const useEditForm = ({ name, username, active, role }) => {
 		const timeoutId = setTimeout(() => {
 			validateUsernameIsAvailable(
 				formValues.username.value,
-				setUsernameError,
+				dispatchEditForm,
 				controller.signal
 			);
 		}, 500);
@@ -67,10 +90,7 @@ export const useEditForm = ({ name, username, active, role }) => {
 	return {
 		...formValues,
 		isFormInvalid,
-		setName,
-		setUsername,
-		setActive,
-		setRole
+		dispatchEditForm
 	};
 };
 
@@ -96,7 +116,7 @@ const areInitialValues = (formValues, user) =>
 
 const validateUsernameIsAvailable = async (
 	username,
-	setUsernameError,
+	dispatchEditForm,
 	signal
 ) => {
 	let errorMessage;
@@ -104,5 +124,8 @@ const validateUsernameIsAvailable = async (
 	if (aborted) return;
 	if (error) errorMessage = 'Error validating';
 	if (user) errorMessage = 'Username already in use';
-	setUsernameError(errorMessage);
+	dispatchEditForm({
+		type: EDIT_FORM_ACTIONS.USERNAME_ERROR_CHANGED,
+		value: errorMessage
+	});
 };

@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 
 import { deleteUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
-import { useEditForm } from '../../../lib/hooks/useEditForm';
+import { useDeleteForm } from '../../../lib/hooks/useDeleteForm';
 import Button from '../../atoms/buttons/Button';
 import style from './UserDeleteForm.module.css';
 
@@ -10,7 +10,7 @@ const UserDeleteForm = () => {
 	const { currentUser, setFiltersForm, onSuccess } =
 		useContext(UserFormsContext);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const { name } = useEditForm(currentUser);
+	const { name } = useDeleteForm(currentUser);
 	return (
 		<form
 			onSubmit={ev =>

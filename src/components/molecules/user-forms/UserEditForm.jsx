@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 import { USER_ROLES } from '../../../constants/userRoles';
 import { updateUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
-import { useEditForm } from '../../../lib/hooks/useEditForm';
+import { EDIT_FORM_ACTIONS, useEditForm } from '../../../lib/hooks/useEditForm';
 import Button from '../../atoms/buttons/Button';
 import InputCheckbox from '../../atoms/forms/InputCheckbox';
 import InputSelect from '../../atoms/forms/InputSelect';
@@ -14,17 +14,8 @@ import style from './UserEditForm.module.css';
 const UserEditForm = () => {
 	const { currentUser, onSuccess } = useContext(UserFormsContext);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const {
-		name,
-		username,
-		active,
-		role,
-		isFormInvalid,
-		setName,
-		setUsername,
-		setActive,
-		setRole
-	} = useEditForm(currentUser);
+	const { name, username, active, role, isFormInvalid, dispatchEditForm } =
+		useEditForm(currentUser);
 	return (
 		<form
 			onSubmit={ev =>
@@ -50,7 +41,12 @@ const UserEditForm = () => {
 					className={style.input}
 					error={name.error}
 					value={name.value}
-					onChange={ev => setName(ev.target.value)}
+					onChange={ev =>
+						dispatchEditForm({
+							type: EDIT_FORM_ACTIONS.NAME_CHANGED,
+							value: ev.target.value
+						})
+					}
 				/>
 
 				<InputTextAsync
@@ -66,7 +62,13 @@ const UserEditForm = () => {
 						!username.error
 					}
 					value={username.value}
-					onChange={ev => setUsername(ev.target.value)}
+					onChange={ev =>
+						dispatchEditForm({
+							type: EDIT_FORM_ACTIONS.USERNAME_CHANGED,
+							value: ev.target.value,
+							currentUsername: currentUser.username
+						})
+					}
 				/>
 			</div>
 
@@ -74,7 +76,12 @@ const UserEditForm = () => {
 				<InputSelect
 					name='role'
 					value={role}
-					onChange={ev => setRole(ev.target.value)}
+					onChange={ev =>
+						dispatchEditForm({
+							type: EDIT_FORM_ACTIONS.ROLE_CHANGED,
+							value: ev.target.value
+						})
+					}
 				>
 					<option value={USER_ROLES.TEACHER}>Teacher</option>
 					<option value={USER_ROLES.STUDENT}>Student</option>
@@ -86,7 +93,12 @@ const UserEditForm = () => {
 						name='active'
 						className={style.checkbox}
 						checked={active}
-						onChange={ev => setActive(ev.target.checked)}
+						onChange={ev =>
+							dispatchEditForm({
+								type: EDIT_FORM_ACTIONS.ACTIVE_CHANGED,
+								value: ev.target.checked
+							})
+						}
 					/>
 					<span>¿Active?</span>
 				</div>
