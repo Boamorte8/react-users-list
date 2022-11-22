@@ -13,18 +13,18 @@ export const CREATE_FORM_INITIAL_STATE = {
 	}
 };
 
-export const createFormReducer = (state, action) => {
-	switch (action.type) {
+export const createFormReducer = (state, { type, payload }) => {
+	switch (type) {
 		case CREATE_FORM_ACTIONS.NAME_CHANGED: {
-			const error = validateName(action.value);
-			return { ...state, name: { value: action.value, error } };
+			const error = validateName(payload);
+			return { ...state, name: { value: payload, error } };
 		}
 		case CREATE_FORM_ACTIONS.USERNAME_CHANGED: {
-			const error = validateUsername(action.value);
+			const error = validateUsername(payload);
 			return {
 				...state,
 				username: {
-					value: action.value,
+					value: payload,
 					loading: !error,
 					error
 				}
@@ -36,7 +36,7 @@ export const createFormReducer = (state, action) => {
 				username: {
 					value: state.username.value,
 					loading: false,
-					error: action.value
+					error: payload
 				}
 			};
 		default:

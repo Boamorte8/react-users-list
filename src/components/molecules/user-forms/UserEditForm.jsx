@@ -1,7 +1,12 @@
 import { useContext, useState } from 'react';
 
-import { EDIT_FORM_ACTIONS } from '../../../constants/editFormActions';
 import { USER_ROLES } from '../../../constants/userRoles';
+import {
+	activeChangedEditForm,
+	nameChangedEditForm,
+	roleChangedEditForm,
+	usernameChangedEditForm
+} from '../../../lib/actions/editFormActions';
 import { updateUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
 import { useEditForm } from '../../../lib/hooks/useEditForm';
@@ -43,10 +48,7 @@ const UserEditForm = () => {
 					error={name.error}
 					value={name.value}
 					onChange={ev =>
-						dispatchEditForm({
-							type: EDIT_FORM_ACTIONS.NAME_CHANGED,
-							value: ev.target.value
-						})
+						dispatchEditForm(nameChangedEditForm(ev.target.value))
 					}
 				/>
 
@@ -64,11 +66,9 @@ const UserEditForm = () => {
 					}
 					value={username.value}
 					onChange={ev =>
-						dispatchEditForm({
-							type: EDIT_FORM_ACTIONS.USERNAME_CHANGED,
-							value: ev.target.value,
-							currentUsername: currentUser.username
-						})
+						dispatchEditForm(
+							usernameChangedEditForm(ev.target.value, currentUser.username)
+						)
 					}
 				/>
 			</div>
@@ -78,10 +78,7 @@ const UserEditForm = () => {
 					name='role'
 					value={role}
 					onChange={ev =>
-						dispatchEditForm({
-							type: EDIT_FORM_ACTIONS.ROLE_CHANGED,
-							value: ev.target.value
-						})
+						dispatchEditForm(roleChangedEditForm(ev.target.value))
 					}
 				>
 					<option value={USER_ROLES.TEACHER}>Teacher</option>
@@ -95,10 +92,7 @@ const UserEditForm = () => {
 						className={style.checkbox}
 						checked={active}
 						onChange={ev =>
-							dispatchEditForm({
-								type: EDIT_FORM_ACTIONS.ACTIVE_CHANGED,
-								value: ev.target.checked
-							})
+							dispatchEditForm(activeChangedEditForm(ev.target.checked))
 						}
 					/>
 					<span>¿Active?</span>

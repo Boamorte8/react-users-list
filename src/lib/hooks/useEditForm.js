@@ -1,6 +1,9 @@
 import { useEffect, useReducer } from 'react';
 
-import { EDIT_FORM_ACTIONS } from '../../constants/editFormActions';
+import {
+	replaceEditForm,
+	usernameErrorChangedEditForm
+} from '../actions/editFormActions';
 import { findUserByUsername } from '../api/usersApi';
 import {
 	editFormReducer,
@@ -21,10 +24,7 @@ export const useEditForm = user => {
 		formValues.username.loading;
 
 	useEffect(() => {
-		dispatchEditForm({
-			type: EDIT_FORM_ACTIONS.REPLACE,
-			value: getEditFormInitialState(user)
-		});
+		dispatchEditForm(replaceEditForm(getEditFormInitialState(user)));
 	}, [user]);
 
 	useEffect(() => {
@@ -67,8 +67,5 @@ const validateUsernameIsAvailable = async (
 	if (aborted) return;
 	if (error) errorMessage = 'Error validating';
 	if (user) errorMessage = 'Username already in use';
-	dispatchEditForm({
-		type: EDIT_FORM_ACTIONS.USERNAME_ERROR_CHANGED,
-		value: errorMessage
-	});
+	dispatchEditForm(usernameErrorChangedEditForm(errorMessage));
 };

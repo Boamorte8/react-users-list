@@ -1,7 +1,10 @@
 import { useContext, useState } from 'react';
 
-import { CREATE_FORM_ACTIONS } from '../../../constants/createFormActions';
 import { USER_ROLES } from '../../../constants/userRoles';
+import {
+	nameChangedCreateForm,
+	usernameChangedCreateForm
+} from '../../../lib/actions/createFormActions';
 import { createUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
 import { useCreateForm } from '../../../lib/hooks/useCreateForm';
@@ -31,10 +34,7 @@ const UserCreateForm = () => {
 					error={name.error}
 					value={name.value}
 					onChange={ev =>
-						dispatchCreateForm({
-							type: CREATE_FORM_ACTIONS.NAME_CHANGED,
-							value: ev.target.value
-						})
+						dispatchCreateForm(nameChangedCreateForm(ev.target.value))
 					}
 				/>
 
@@ -48,10 +48,7 @@ const UserCreateForm = () => {
 					success={username.value && !username.loading && !username.error}
 					value={username.value}
 					onChange={ev =>
-						dispatchCreateForm({
-							type: CREATE_FORM_ACTIONS.USERNAME_CHANGED,
-							value: ev.target.value
-						})
+						dispatchCreateForm(usernameChangedCreateForm(ev.target.value))
 					}
 				/>
 			</div>

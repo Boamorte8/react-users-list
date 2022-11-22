@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
-import { CREATE_FORM_ACTIONS } from '../../constants/createFormActions';
+import { usernameErrorChangedCreateForm } from '../actions/createFormActions';
 import { findUserByUsername } from '../api/usersApi';
 import {
 	createFormReducer,
@@ -10,7 +10,6 @@ import {
 export const useCreateForm = () => {
 	const [formValues, dispatchCreateForm] = useReducer(
 		createFormReducer,
-		null,
 		CREATE_FORM_INITIAL_STATE
 	);
 
@@ -57,8 +56,5 @@ const validateUsernameIsAvailable = async (
 	if (aborted) return;
 	if (error) errorMessage = 'Error validating';
 	if (user) errorMessage = 'Username already in use';
-	dispatchCreateForm({
-		type: CREATE_FORM_ACTIONS.USERNAME_ERROR_CHANGED,
-		value: errorMessage
-	});
+	dispatchCreateForm(usernameErrorChangedCreateForm(errorMessage));
 };
