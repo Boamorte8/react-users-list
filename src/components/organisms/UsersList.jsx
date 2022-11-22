@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 
-import { FILTERS_ACTIONS, useFilters } from '../../lib/hooks/useFilters.js';
+import { FILTERS_ACTIONS } from '../../constants/filtersActions.js';
 import { useUsers } from '../../lib/hooks/useUsers.js';
+import {
+	filtersReducer,
+	FILTERS_INITIAL_STATE
+} from '../../lib/reducers/filtersReducer.js';
 import UserFormContainer from '../molecules/user-forms/UserFormContainer.jsx';
 import UsersListFilters from '../molecules/user-list/UsersListFilters';
 import UsersListPagination from '../molecules/user-list/UsersListPagination.jsx';
@@ -12,7 +16,10 @@ import style from './UsersList.module.css';
 
 const UsersList = () => {
 	const [showRowsFormat, setShowRowsFormat] = useState(true);
-	const { filters, dispatchFilters } = useFilters();
+	const [filters, dispatchFilters] = useReducer(
+		filtersReducer,
+		FILTERS_INITIAL_STATE
+	);
 
 	const { users, totalUsers, usersError, usersLoading } = useUsers(filters);
 

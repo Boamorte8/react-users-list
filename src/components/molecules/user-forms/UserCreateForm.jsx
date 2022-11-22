@@ -1,12 +1,10 @@
 import { useContext, useState } from 'react';
 
+import { CREATE_FORM_ACTIONS } from '../../../constants/createFormActions';
 import { USER_ROLES } from '../../../constants/userRoles';
 import { createUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
-import {
-	CREATE_FORM_ACTIONS,
-	useCreateForm
-} from '../../../lib/hooks/useCreateForm';
+import { useCreateForm } from '../../../lib/hooks/useCreateForm';
 import Button from '../../atoms/buttons/Button';
 import InputCheckbox from '../../atoms/forms/InputCheckbox';
 import InputSelect from '../../atoms/forms/InputSelect';

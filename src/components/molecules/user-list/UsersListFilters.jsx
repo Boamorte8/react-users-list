@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 
+import { FILTERS_ACTIONS } from '../../../constants/filtersActions';
 import { SORT_OPTIONS } from '../../../constants/sortOptions';
 import { USER_FORMS } from '../../../constants/userForms';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
-import { FILTERS_ACTIONS } from '../../../lib/hooks/useFilters';
 import Button from '../../atoms/buttons/Button';
 import InputCheckbox from '../../atoms/forms/InputCheckbox';
 import InputSearch from '../../atoms/forms/InputSearch';

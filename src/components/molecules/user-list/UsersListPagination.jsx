@@ -1,5 +1,5 @@
+import { FILTERS_ACTIONS } from '../../../constants/filtersActions.js';
 import { PAGINATION } from '../../../constants/pagination.js';
-import { FILTERS_ACTIONS } from '../../../lib/hooks/useFilters.js';
 import InputSelect from '../../atoms/forms/InputSelect.jsx';
 import PageSelector from '../PageSelector.jsx';
 import style from './UsersListPagination.module.css';

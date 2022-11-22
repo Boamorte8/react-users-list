@@ -1,9 +1,8 @@
-import { useReducer } from 'react';
+import { FILTERS_ACTIONS } from '../../constants/filtersActions';
+import { PAGINATION } from '../../constants/pagination';
+import { SORT_OPTIONS } from '../../constants/sortOptions';
 
-import { PAGINATION } from '../../constants/pagination.js';
-import { SORT_OPTIONS } from '../../constants/sortOptions.js';
-
-const INITIAL_STATE = {
+export const FILTERS_INITIAL_STATE = {
 	search: '',
 	onlyActive: false,
 	sortBy: SORT_OPTIONS.DEFAULT,
@@ -11,16 +10,7 @@ const INITIAL_STATE = {
 	itemsPerPage: PAGINATION.DEFAULT_ITEMS_PER_PAGE
 };
 
-export const FILTERS_ACTIONS = {
-	SEARCH_CHANGED: 'SEARCH_CHANGED',
-	ONLY_ACTIVE_CHANGED: 'ONLY_ACTIVE_CHANGED',
-	SORT_BY_CHANGED: 'SORT_BY_CHANGED',
-	PAGE_CHANGED: 'PAGE_CHANGED',
-	ITEMS_PER_PAGE_CHANGED: 'ITEMS_PER_PAGE_CHANGED',
-	RESET_FILTERS: 'RESET_FILTERS'
-};
-
-const filtersReducer = (state, action) => {
+export const filtersReducer = (state, action) => {
 	switch (action.type) {
 		case FILTERS_ACTIONS.SEARCH_CHANGED:
 			return {
@@ -55,16 +45,8 @@ const filtersReducer = (state, action) => {
 				page: PAGINATION.DEFAULT_PAGE
 			};
 		case FILTERS_ACTIONS.RESET_FILTERS:
-			return { ...INITIAL_STATE };
+			return { ...FILTERS_INITIAL_STATE };
 		default:
 			throw new Error('Invalid action type');
 	}
-};
-
-export const useFilters = () => {
-	const [filters, dispatchFilters] = useReducer(filtersReducer, {
-		...INITIAL_STATE
-	});
-
-	return { filters, dispatchFilters };
 };

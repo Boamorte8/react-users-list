@@ -1,9 +1,10 @@
 import { useContext, useState } from 'react';
 
+import { EDIT_FORM_ACTIONS } from '../../../constants/editFormActions';
 import { USER_ROLES } from '../../../constants/userRoles';
 import { updateUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
-import { EDIT_FORM_ACTIONS, useEditForm } from '../../../lib/hooks/useEditForm';
+import { useEditForm } from '../../../lib/hooks/useEditForm';
 import Button from '../../atoms/buttons/Button';
 import InputCheckbox from '../../atoms/forms/InputCheckbox';
 import InputSelect from '../../atoms/forms/InputSelect';
