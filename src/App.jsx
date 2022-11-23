@@ -1,50 +1,64 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
-// let count = 0;
+// const LS_KEY = 'count';
 
-// const Counter = ({ name }) => {
-// 	// const [count, setCount] = useState(0);
-// 	let countRef = useRef(0);
+const Counter = () => {
+	const [counter, setCounter] = useState(0);
 
-// 	console.log('Render', name);
-// 	const handleClick = () => {
-// 		// setCount(count + 1);
-// 		// console.log(count + 1);
-// 		countRef.current += 1;
+	useEffect(() => {
+		document.title = `Counter ${counter}`;
 
-// 		// count++;
-// 		console.log(name, countRef.current);
-// 		// console.log(name, count, countRef.current);
-// 	};
-// 	return <button onClick={handleClick}>Count {name}</button>;
-// };
+		let meta = document.head.querySelector('meta[name="description"]');
+		if (!meta) {
+			meta = document.createElement('meta');
+			meta.name = 'description';
+			document.head.appendChild(meta);
+		}
+		meta.content = `Description with count: ${counter}`;
+		// return () => {
+		//   cleanup
+		// };
+	}, [counter]);
 
-const CustomInput = forwardRef((_, ref) => {
-	const inputRef = useRef(null);
-	useImperativeHandle(
-		ref,
-		() => ({
-			focus: () => {
-				console.log('Focus');
-				inputRef.current.focus();
-			}
-		}),
-		[]
-	);
-	return <input type='text' ref={inputRef} />;
-	// return <input type='text' ref={ref} />;
-});
-
-const App = () => {
-	const inputRef = useRef(null);
+	const handleIncrement = () => {
+		setCounter(counter + 1);
+	};
 	return (
 		<>
-			<CustomInput ref={inputRef} />
-			<button onClick={() => inputRef.current.focus()}>focus</button>
-			{/* <Counter name='A' />
-		<Counter name='B' /> */}
-			{/* <CounterA />
-		<CounterB /> */}
+			<h2>Counter - Value: {counter}</h2>
+			<button onClick={handleIncrement}>Increment</button>
+		</>
+	);
+};
+
+const App = () => {
+	// const [counter, setCounter] = useState(0);
+	// Sync operation then you can do it on render
+	// Number(localStorage.getItem(LS_KEY)) || 0
+
+	// Another way to implement it for a sync operation
+	// useEffect(() => {
+	// 	localStorage.setItem(LS_KEY, counter);
+	// }, [counter]);
+
+	// With async operation
+	// useEffect(() => {
+	// 	fetch('').then((response) => response.json()).then(data => setCounter(data));
+	// }, [counter]);
+
+	// const handleIncrement = () => {
+	// fetch('', { method: 'POST', body: counter.toString() }).then((response) => response.json()).then(data => setCounter(data));
+
+	// setCounter(counter + 1);
+	// A way to implement it for a sync operation
+	// localStorage.setItem(LS_KEY, counter + 1);
+	// };
+
+	return (
+		<>
+			{/* <h2>Counter - Value: {counter}</h2>
+			<button onClick={handleIncrement}>Increment</button> */}
+			<Counter />
 		</>
 	);
 };
