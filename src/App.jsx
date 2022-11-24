@@ -1,64 +1,64 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
-// const LS_KEY = 'count';
-
-const Counter = () => {
-	const [counter, setCounter] = useState(0);
+const Child = () => {
+	const [portal, setPortal] = useState(null);
 
 	useEffect(() => {
-		document.title = `Counter ${counter}`;
+		setPortal(
+			createPortal(<h1>This is a portal</h1>, document.getElementById('portal'))
+		);
+	}, []);
 
-		let meta = document.head.querySelector('meta[name="description"]');
-		if (!meta) {
-			meta = document.createElement('meta');
-			meta.name = 'description';
-			document.head.appendChild(meta);
-		}
-		meta.content = `Description with count: ${counter}`;
-		// return () => {
-		//   cleanup
-		// };
-	}, [counter]);
+	return portal;
 
-	const handleIncrement = () => {
-		setCounter(counter + 1);
-	};
-	return (
+	// This will not work properly
+	// return createPortal(
+	// 	<h1>This is a portal</h1>,
+	// 	document.getElementById('portal')
+	// );
+};
+
+const HeadPortal = () =>
+	createPortal(
 		<>
-			<h2>Counter - Value: {counter}</h2>
-			<button onClick={handleIncrement}>Increment</button>
-		</>
+			<title>Boamorte</title>
+			<meta name='description' content='Boamorte page'></meta>
+		</>,
+		document.head
+	);
+
+const PortalA = () =>
+	createPortal(<h1>Portal A</h1>, document.getElementById('portal'));
+
+const PortalB = () =>
+	createPortal(<h1>Portal B</h1>, document.getElementById('portal'));
+
+const PortalC = () => {
+	return createPortal(
+		<button>Portal C</button>,
+		document.getElementById('portal')
 	);
 };
 
 const App = () => {
-	// const [counter, setCounter] = useState(0);
-	// Sync operation then you can do it on render
-	// Number(localStorage.getItem(LS_KEY)) || 0
-
-	// Another way to implement it for a sync operation
-	// useEffect(() => {
-	// 	localStorage.setItem(LS_KEY, counter);
-	// }, [counter]);
-
-	// With async operation
-	// useEffect(() => {
-	// 	fetch('').then((response) => response.json()).then(data => setCounter(data));
-	// }, [counter]);
-
-	// const handleIncrement = () => {
-	// fetch('', { method: 'POST', body: counter.toString() }).then((response) => response.json()).then(data => setCounter(data));
-
-	// setCounter(counter + 1);
-	// A way to implement it for a sync operation
-	// localStorage.setItem(LS_KEY, counter + 1);
-	// };
-
+	const [showA, setShowA] = useState(true);
+	const [showB, setShowB] = useState(true);
 	return (
 		<>
-			{/* <h2>Counter - Value: {counter}</h2>
-			<button onClick={handleIncrement}>Increment</button> */}
-			<Counter />
+			<HeadPortal />
+			{showA && <PortalA />}
+			{showB && <PortalB />}
+			<button onClick={() => setShowA(!showA)}>Show/Hide A</button>
+			<button onClick={() => setShowB(!showB)}>Show/Hide B</button>
+
+			<div onClick={() => console.log('Click on div')}>
+				<PortalC />
+			</div>
+
+			{/* <h1>This is my App</h1>
+			<div id='portal'></div> */}
+			<Child />
 		</>
 	);
 };
