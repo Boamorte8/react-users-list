@@ -61,6 +61,7 @@ npm i
 
 ## Resources
 
+- [Design System Practice 3](https://www.figma.com/file/aithAfswnewGLVWDIiokrs/LearnThis---Curso-React-desde-cero--Pr%C3%A1ctica-3?node-id=304%3A2856&t=X6b1DhXhGr78MDlB-0) -- This app design system
 - [Design System](https://www.figma.com/file/FpCbTivcYMoVDfnIDI0Jmp/LearnThis---Curso-React-desde-cero--Pr%C3%A1ctica-1?node-id=238%3A2943&t=cRZz0hSheHYyHrME-0) -- This app design system
 
 <!-- LICENSE -->
