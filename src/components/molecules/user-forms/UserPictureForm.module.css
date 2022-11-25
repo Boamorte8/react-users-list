@@ -1,0 +1,52 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+}
+
+.preview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+
+	height: 6.25rem;
+	width: 6.25rem;
+	border-radius: 50%;
+	background-color: var(--color-lightgray);
+	margin: 0.75rem 0;
+}
+
+.picture {
+	height: 100%;
+	width: 100%;
+	border-radius: 50%;
+}
+
+.image {
+	height: 2.25rem;
+	width: 2.25rem;
+}
+
+.filename {
+	color: var(--color-green);
+}
+
+.error {
+	color: var(--color-red);
+}
+
+.select {
+	position: absolute;
+	bottom: -0.625rem;
+	right: -0.625rem;
+}
+
+.input {
+	display: none;
+}
+
+.button {
+	width: 100%;
+}
