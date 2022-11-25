@@ -1,17 +1,16 @@
 import { useReducer, useState } from 'react';
 
 import { resetFilters } from '../../lib/actions/filtersActions.js';
+import { UserFormsContext } from '../../lib/contexts/UserFormsContext.js';
 import { useUsers } from '../../lib/hooks/useUsers.js';
 import {
 	filtersReducer,
 	FILTERS_INITIAL_STATE
 } from '../../lib/reducers/filtersReducer.js';
-import UserFormContainer from '../molecules/user-forms/UserFormContainer.jsx';
 import UsersListFilters from '../molecules/user-list/UsersListFilters';
 import UsersListPagination from '../molecules/user-list/UsersListPagination.jsx';
 import UsersListRows from '../molecules/user-list/UsersListRows';
 import UsersListViewSelector from '../molecules/user-list/UsersListViewSelector.jsx';
-import UserFormsProvider from '../providers/UserFormsProvider.jsx';
 import style from './UsersList.module.css';
 
 const UsersList = () => {
@@ -29,14 +28,15 @@ const UsersList = () => {
 		<div className={style.wrapper}>
 			<h1 className={style.title}>User List</h1>
 
-			<UserFormsProvider resetFilters={() => dispatchFilters(resetFilters())}>
+			<UserFormsContext.Provider
+				value={{ onSuccess: () => dispatchFilters(resetFilters()) }}
+			>
 				<UsersListFilters
 					search={search}
 					onlyActive={onlyActive}
 					sortBy={sortBy}
 					dispatchFilters={dispatchFilters}
 				/>
-				<UserFormContainer />
 				<UsersListViewSelector
 					showRowsFormat={showRowsFormat}
 					setShowRowsFormat={setShowRowsFormat}
@@ -47,7 +47,7 @@ const UsersList = () => {
 					loading={usersLoading}
 					showRowsFormat={showRowsFormat}
 				/>
-			</UserFormsProvider>
+			</UserFormsContext.Provider>
 
 			<UsersListPagination
 				page={page}

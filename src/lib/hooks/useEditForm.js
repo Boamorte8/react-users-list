@@ -1,9 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
-import {
-	replaceEditForm,
-	usernameErrorChangedEditForm
-} from '../actions/editFormActions';
+import { usernameErrorChangedEditForm } from '../actions/editFormActions';
 import { findUserByUsername } from '../api/usersApi';
 import {
 	editFormReducer,
@@ -22,10 +19,6 @@ export const useEditForm = user => {
 		!!formValues.name.error ||
 		!!formValues.username.error ||
 		formValues.username.loading;
-
-	useEffect(() => {
-		dispatchEditForm(replaceEditForm(getEditFormInitialState(user)));
-	}, [user]);
 
 	useEffect(() => {
 		if (!formValues.username.loading) return;

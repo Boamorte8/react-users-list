@@ -1,25 +1,28 @@
-import { useContext } from 'react';
+import { useState } from 'react';
 
 import { SORT_OPTIONS } from '../../../constants/sortOptions';
-import { USER_FORMS } from '../../../constants/userForms';
 import {
 	onlyActiveChanged,
 	searchChanged,
 	sortByChanged
 } from '../../../lib/actions/filtersActions';
-import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
 import Button from '../../atoms/buttons/Button';
 import InputCheckbox from '../../atoms/forms/InputCheckbox';
 import InputSearch from '../../atoms/forms/InputSearch';
 import InputSelect from '../../atoms/forms/InputSelect';
+import Modal from '../../atoms/modal/Modal';
+import UserCreateForm from '../user-forms/UserCreateForm';
 import style from './UsersListFilters.module.css';
 
 const UsersListFilters = ({ search, onlyActive, sortBy, dispatchFilters }) => {
-	const { currentForm, setCreateForm } = useContext(UserFormsContext);
+	const [showModal, setShowModal] = useState(false);
 
-	if (currentForm !== USER_FORMS.FILTERS) return null;
+	const closeModal = () => setShowModal(false);
 	return (
 		<div className={style.form}>
+			<Modal closeModal={closeModal}>
+				{showModal && <UserCreateForm closeModal={closeModal} />}
+			</Modal>
 			<div className={style.row}>
 				<InputSearch
 					name='search'
@@ -56,7 +59,7 @@ const UsersListFilters = ({ search, onlyActive, sortBy, dispatchFilters }) => {
 					/>
 					<p>Display only actives</p>
 				</div>
-				<Button onClick={setCreateForm}>Add user</Button>
+				<Button onClick={() => setShowModal(true)}>Add user</Button>
 			</div>
 		</div>
 	);

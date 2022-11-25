@@ -1,18 +1,7 @@
-.row {
+.form {
 	display: flex;
-	justify-content: space-between;
-	gap: 1rem;
-}
-
-.row ~ .row {
-	margin-top: 1.5rem;
-}
-/* .row:not(:last-child) {
-	margin-bottom: 1rem;
-} */
-
-.input {
-	width: 45%;
+	flex-direction: column;
+	gap: 1.5rem;
 }
 
 .active {

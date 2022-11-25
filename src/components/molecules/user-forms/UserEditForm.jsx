@@ -17,13 +17,14 @@ import InputText from '../../atoms/forms/InputText';
 import InputTextAsync from '../../atoms/forms/InputTextAsync';
 import style from './UserEditForm.module.css';
 
-const UserEditForm = () => {
-	const { currentUser, onSuccess } = useContext(UserFormsContext);
+const UserEditForm = ({ currentUser, closeModal }) => {
+	const { onSuccess } = useContext(UserFormsContext);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const { name, username, active, role, isFormInvalid, dispatchEditForm } =
 		useEditForm(currentUser);
 	return (
 		<form
+			className={style.form}
 			onSubmit={ev =>
 				handleSubmit(
 					ev,
@@ -35,78 +36,75 @@ const UserEditForm = () => {
 						role
 					},
 					setIsSubmitting,
-					onSuccess
+					onSuccess,
+					closeModal
 				)
 			}
 		>
-			<div className={style.row}>
-				<InputText
-					label='Name'
-					name='name'
-					placeholder='Name...'
-					className={style.input}
-					error={name.error}
-					value={name.value}
+			<InputText
+				label='Name'
+				name='name'
+				placeholder='Name...'
+				error={name.error}
+				value={name.value}
+				onChange={ev => dispatchEditForm(nameChangedEditForm(ev.target.value))}
+			/>
+
+			<InputTextAsync
+				label='Username'
+				name='username'
+				placeholder='Username...'
+				error={username.error}
+				loading={username.loading}
+				success={
+					username.value !== currentUser.username &&
+					!username.loading &&
+					!username.error
+				}
+				value={username.value}
+				onChange={ev =>
+					dispatchEditForm(
+						usernameChangedEditForm(ev.target.value, currentUser.username)
+					)
+				}
+			/>
+
+			<InputSelect
+				name='role'
+				value={role}
+				onChange={ev => dispatchEditForm(roleChangedEditForm(ev.target.value))}
+			>
+				<option value={USER_ROLES.TEACHER}>Teacher</option>
+				<option value={USER_ROLES.STUDENT}>Student</option>
+				<option value={USER_ROLES.OTHER}>Other</option>
+			</InputSelect>
+
+			<div className={style.active}>
+				<InputCheckbox
+					name='active'
+					className={style.checkbox}
+					checked={active}
 					onChange={ev =>
-						dispatchEditForm(nameChangedEditForm(ev.target.value))
+						dispatchEditForm(activeChangedEditForm(ev.target.checked))
 					}
 				/>
-
-				<InputTextAsync
-					label='Username'
-					name='username'
-					placeholder='Username...'
-					className={style.input}
-					error={username.error}
-					loading={username.loading}
-					success={
-						username.value !== currentUser.username &&
-						!username.loading &&
-						!username.error
-					}
-					value={username.value}
-					onChange={ev =>
-						dispatchEditForm(
-							usernameChangedEditForm(ev.target.value, currentUser.username)
-						)
-					}
-				/>
+				<span>¿Active?</span>
 			</div>
 
-			<div className={style.row}>
-				<InputSelect
-					name='role'
-					value={role}
-					onChange={ev =>
-						dispatchEditForm(roleChangedEditForm(ev.target.value))
-					}
-				>
-					<option value={USER_ROLES.TEACHER}>Teacher</option>
-					<option value={USER_ROLES.STUDENT}>Student</option>
-					<option value={USER_ROLES.OTHER}>Other</option>
-				</InputSelect>
-
-				<div className={style.active}>
-					<InputCheckbox
-						name='active'
-						className={style.checkbox}
-						checked={active}
-						onChange={ev =>
-							dispatchEditForm(activeChangedEditForm(ev.target.checked))
-						}
-					/>
-					<span>¿Active?</span>
-				</div>
-
-				<Button type='submit' disabled={isFormInvalid || isSubmitting}>
-					{isSubmitting ? 'Loading...' : 'Edit user'}
-				</Button>
-			</div>
+			<Button type='submit' disabled={isFormInvalid || isSubmitting}>
+				{isSubmitting ? 'Loading...' : 'Edit user'}
+			</Button>
 		</form>
 	);
 };
 
-const handleSubmit = async (ev, user, setIsSubmitting, onSuccess) => {
+const handleSubmit = async (
+	ev,
+	user,
+	setIsSubmitting,
+	onSuccess,
+	closeModal
+) => {
 	ev.preventDefault();
 
 	setIsSubmitting(true);
@@ -115,6 +113,7 @@ const handleSubmit = async (ev, user, setIsSubmitting, onSuccess) => {
 
 	if (edited) {
 		onSuccess();
+		closeModal();
 	} else {
 		setIsSubmitting(false);
 	}

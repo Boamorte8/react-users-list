@@ -4,7 +4,7 @@ import IconButton from '../buttons/IconButton';
 import CrossIcon from '../icons/CrossIcon';
 import style from './Modal.module.css';
 
-const Modal = ({ onClose, children }) => {
+const Modal = ({ closeModal, children }) => {
 	if (!children) return null;
 	return createPortal(
 		<div className={style.overlay}>
@@ -14,7 +14,7 @@ const Modal = ({ onClose, children }) => {
 					filled
 					className={style.close}
 					icon={CrossIcon}
-					onClick={onClose}
+					onClick={closeModal}
 				/>
 				{children}
 			</div>
