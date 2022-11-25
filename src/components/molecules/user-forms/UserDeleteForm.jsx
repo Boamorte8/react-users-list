@@ -2,14 +2,12 @@ import { useContext, useState } from 'react';
 
 import { deleteUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
-import { useDeleteForm } from '../../../lib/hooks/useDeleteForm';
 import Button from '../../atoms/buttons/Button';
 import style from './UserDeleteForm.module.css';
 
 const UserDeleteForm = ({ currentUser, closeModal }) => {
 	const { onSuccess } = useContext(UserFormsContext);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const { name } = useDeleteForm(currentUser);
 	return (
 		<form
 			className={style.form}
@@ -19,7 +17,7 @@ const UserDeleteForm = ({ currentUser, closeModal }) => {
 		>
 			<p
 				className={style.text}
-			>{`Do you want to delete user "${name}"? Are you sure?`}</p>
+			>{`Do you want to delete user "${currentUser.name}"? Are you sure?`}</p>
 
 			<Button type='submit' disabled={isSubmitting}>
 				{isSubmitting ? 'Loading...' : 'Delete user'}
