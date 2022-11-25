@@ -9,7 +9,7 @@
 }
 
 .name {
-	width: 45%;
+	width: 50%;
 }
 
 .role,
@@ -27,5 +27,5 @@
 	align-items: center;
 	justify-content: center;
 	gap: 0.5rem;
-	width: 15%;
+	width: 10%;
 }

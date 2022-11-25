@@ -7,7 +7,11 @@ import style from './UserCard.module.css';
 const UserCard = ({ user }) => (
 	<div className={style.user}>
 		<div className={style.name}>
-			<UserDisplay username={user.username} name={user.name} />
+			<UserDisplay
+				username={user.username}
+				name={user.name}
+				picture={user.picture}
+			/>
 		</div>
 		<div className={style.row}>
 			<div className={style.role}>
