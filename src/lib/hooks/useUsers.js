@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { findAllUsers } from '../api/usersApi';
+import { alertBox } from '../events/alertEvents';
 
 export const useUsers = filters => {
 	const [{ data, count, error, loading }, setUsers] = useState({
@@ -34,5 +35,8 @@ const loadUsers = async (setUsers, setError, signal, pagination) => {
 	const { users, count, aborted } = await findAllUsers(signal, pagination);
 	if (aborted) return;
 	if (users) setUsers(users, count);
-	else setError();
+	else {
+		setError();
+		alertBox.error('Error loading users');
+	}
 };

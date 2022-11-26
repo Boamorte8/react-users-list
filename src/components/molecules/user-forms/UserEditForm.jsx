@@ -9,6 +9,7 @@ import {
 } from '../../../lib/actions/editFormActions';
 import { updateUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
+import { alertBox } from '../../../lib/events/alertEvents';
 import { useEditForm } from '../../../lib/hooks/useEditForm';
 import Button from '../../atoms/buttons/Button';
 import InputCheckbox from '../../atoms/forms/InputCheckbox';
@@ -113,10 +114,11 @@ const handleSubmit = async (
 
 	if (edited) {
 		onSuccess();
-		closeModal();
+		alertBox.success('User updated successfully');
 	} else {
-		setIsSubmitting(false);
+		alertBox.error('Error updating user');
 	}
+	closeModal();
 };
 
 export default UserEditForm;

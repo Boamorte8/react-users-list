@@ -7,6 +7,7 @@ import {
 	filtersReducer,
 	FILTERS_INITIAL_STATE
 } from '../../lib/reducers/filtersReducer.js';
+import AlertBox from '../atoms/alerts/AlertBox.jsx';
 import UsersListFilters from '../molecules/user-list/UsersListFilters';
 import UsersListPagination from '../molecules/user-list/UsersListPagination.jsx';
 import UsersListRows from '../molecules/user-list/UsersListRows';
@@ -27,6 +28,7 @@ const UsersList = () => {
 	return (
 		<div className={style.wrapper}>
 			<h1 className={style.title}>User List</h1>
+			<AlertBox />
 
 			<UserFormsContext.Provider
 				value={{ onSuccess: () => dispatchFilters(resetFilters()) }}

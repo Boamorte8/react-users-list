@@ -2,6 +2,7 @@ import { useContext, useRef, useState } from 'react';
 
 import { updateUserPicture } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
+import { alertBox } from '../../../lib/events/alertEvents';
 import { fileToDataURL } from '../../../lib/utils/file-utils';
 import Button from '../../atoms/buttons/Button';
 import IconButton from '../../atoms/buttons/IconButton';
@@ -107,10 +108,11 @@ const handleClick = async (
 	const updated = await updateUserPicture(userId, preview.src);
 	if (updated) {
 		onSuccess();
-		closeModal();
+		alertBox.success('User picture updated successfully');
 	} else {
-		setIsSubmitting(false);
+		alertBox.error('Error updating user picture');
 	}
+	closeModal();
 };
 
 export default UserPictureForm;

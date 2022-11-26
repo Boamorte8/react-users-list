@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 
 import { deleteUser } from '../../../lib/api/usersApi';
 import { UserFormsContext } from '../../../lib/contexts/UserFormsContext';
+import { alertBox } from '../../../lib/events/alertEvents';
 import Button from '../../atoms/buttons/Button';
 import style from './UserDeleteForm.module.css';
 
@@ -49,10 +50,11 @@ const handleSubmit = async (
 
 	if (edited) {
 		onSuccess();
-		closeModal();
+		alertBox.success('User deleted successfully');
 	} else {
-		setIsSubmitting(false);
+		alertBox.error('Error deleting user');
 	}
+	closeModal();
 };
 
 export default UserDeleteForm;
